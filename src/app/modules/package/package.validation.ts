@@ -34,8 +34,23 @@ const createPackageZodSchema = z.object({
         }),
     }),
 });
+const updatePackageZodSchema = z.object({
+    body: z.object({
+        name: z.string().optional(),
+        price: z.number().optional(),
+        renewsFee: z.number().optional(),
+        storage: z.string().optional(),
+        bandwidth: z.string().optional(),
+        website: z.string().optional(),
+        cpu: z.string().optional(),
+        physicalMemory: z.string().optional(),
+        process: z.string().optional(),
+        desc: z.string().optional(),
+    }),
+});
 
 
 export const PackageValidation = {
-    createPackageZodSchema
+    createPackageZodSchema,
+    updatePackageZodSchema
 };

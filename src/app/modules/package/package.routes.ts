@@ -24,6 +24,14 @@ router.get(
     '/:id',
     PackageController.getSinglePackage
 );
+router.patch(
+    '/:id',
+    validateRequest(PackageValidation.updatePackageZodSchema),
+    auth(
+        ENUM_USER_ROLE.ADMIN,
+    ),
+    PackageController.updatePackage
+);
 
 
 export const PackageRoutes = router;

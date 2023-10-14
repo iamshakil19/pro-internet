@@ -79,12 +79,23 @@ const getSinglePackage = async (id: string): Promise<Package | null> => {
       id,
     },
   });
+  return result;
+};
 
+const updatePackage = async (
+  id: string,
+  payload: Partial<Package>
+): Promise<Package> => {
+  const result = await prisma.package.update({
+    where: { id },
+    data: payload
+  });
   return result;
 };
 
 export const PackageService = {
   createPackage,
   getAllPackage,
-  getSinglePackage
+  getSinglePackage,
+  updatePackage
 };
