@@ -29,14 +29,26 @@ const getAllBook = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'All book fetched successfully',
+        message: 'All package fetched successfully',
         meta: result.meta,
         data: result.data,
+    });
+});
+
+const getSinglePackage = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await PackageService.getSinglePackage(id);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Package fetched successfully',
+        data: result,
     });
 });
 
 
 export const PackageController = {
     createPackage,
-    getAllBook
+    getAllBook,
+    getSinglePackage
 };

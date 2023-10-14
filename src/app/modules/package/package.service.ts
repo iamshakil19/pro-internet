@@ -73,7 +73,18 @@ const getAllPackage = async (filters: any, paginationOptions: any) => {
   };
 };
 
+const getSinglePackage = async (id: string): Promise<Package | null> => {
+  const result = await prisma.package.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
 export const PackageService = {
   createPackage,
-  getAllPackage
+  getAllPackage,
+  getSinglePackage
 };

@@ -20,6 +20,10 @@ router.get(
     '/',
     PackageController.getAllBook
 );
+router.get(
+    '/:id',
+    PackageController.getSinglePackage
+);
 
 
 export const PackageRoutes = router;
