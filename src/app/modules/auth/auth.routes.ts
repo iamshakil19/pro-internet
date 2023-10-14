@@ -7,6 +7,8 @@ import { AuthController } from './auth.controller';
 
 const router = express.Router();
 
+router.post('/signup', validateRequest(AuthValidation.signUpZodSchema), AuthController.signup);
+
 router.post(
     '/login',
     validateRequest(AuthValidation.loginZodSchema),

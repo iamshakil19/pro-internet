@@ -6,6 +6,24 @@ import bcrypt from 'bcrypt';
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 import config from "../../../config";
 import { Secret } from "jsonwebtoken";
+import { User } from '@prisma/client'
+
+const signup = async (data: User): Promise<User> => {
+    console.log(data);
+    
+    const { password, ...others } = data;
+    const hashedPassword = await bcrypt.hash(
+        password,
+        Number(config.bcrypt_salt_rounds)
+    );
+    const result = await prisma.user.create({
+        data: {
+            password: hashedPassword,
+            ...others,
+        },
+    });
+    return result;
+};
 
 const login = async (payload: ILogin): Promise<ILoginResponse> => {
     const { email, password } = payload;
@@ -32,4 +50,5 @@ const login = async (payload: ILogin): Promise<ILoginResponse> => {
 
 export const AuthService = {
     login,
+    signup
 };
