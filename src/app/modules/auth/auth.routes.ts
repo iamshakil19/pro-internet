@@ -23,7 +23,7 @@ router.post(
         ENUM_USER_ROLE.ADMIN,
         ENUM_USER_ROLE.USER
     ),
-    // AuthController.changePassword
+    AuthController.changePassword
 );
 
 export const AuthRoutes = router;
