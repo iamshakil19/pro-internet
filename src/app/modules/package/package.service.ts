@@ -2,6 +2,8 @@ import { Package, Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { packageSearchableFields } from "./package.constant";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
 const createPackage = async (data: Package): Promise<Package> => {
   const result = await prisma.package.create({ data })
@@ -74,6 +76,10 @@ const getAllPackage = async (filters: any, paginationOptions: any) => {
 };
 
 const getSinglePackage = async (id: string): Promise<Package | null> => {
+  const isExist = await prisma.package.findUnique({ where: { id } })
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
   const result = await prisma.package.findUnique({
     where: {
       id,
@@ -86,9 +92,26 @@ const updatePackage = async (
   id: string,
   payload: Partial<Package>
 ): Promise<Package> => {
+  const isExist = await prisma.package.findUnique({ where: { id } })
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
   const result = await prisma.package.update({
     where: { id },
     data: payload
+  });
+  return result;
+};
+
+const deletePackage = async (id: string): Promise<Package> => {
+  const isExist = await prisma.package.findUnique({ where: { id } })
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+  }
+  const result = await prisma.package.delete({
+    where: {
+      id,
+    },
   });
   return result;
 };
@@ -97,5 +120,6 @@ export const PackageService = {
   createPackage,
   getAllPackage,
   getSinglePackage,
-  updatePackage
+  updatePackage,
+  deletePackage
 };

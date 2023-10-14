@@ -33,5 +33,6 @@ router.patch(
     PackageController.updatePackage
 );
 
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), PackageController.deletePackage);
 
 export const PackageRoutes = router;
