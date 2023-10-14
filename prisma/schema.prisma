@@ -17,7 +17,24 @@ model User {
   password  String
   access    Boolean? @default(true)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@map("users")
+}
+
+model Package {
+  id             String   @id @default(uuid())
+  name           String
+  price          Int
+  renewsFee      Int
+  storage        String
+  bandwidth      String
+  website        String
+  cpu            String
+  physicalMemory String
+  process        String
+  desc           String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("packages")
 }

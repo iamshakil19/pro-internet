@@ -1,10 +1,12 @@
 {
-  "name": "level-2-assignment-9-pro-internent-server",
+  "name": "level-2-assignment-9-pro-internet-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
