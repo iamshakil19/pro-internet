@@ -55,9 +55,9 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateProfile = catchAsync(async (req: Request, res: Response) => {
-    const user = req.user;
+    const { id } = req.params;
     const payload = req.body;
-    const result = await AuthService.updateProfile(user, payload);
+    const result = await AuthService.updateProfile(id, payload);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,

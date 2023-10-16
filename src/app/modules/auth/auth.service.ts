@@ -78,16 +78,16 @@ const getMe = async (user: JwtPayload | null): Promise<User> => {
 }
 
 const updateProfile = async (
-    user: JwtPayload | null,
-    payload: Partial<User>
+    id: string,
+    data: Partial<User>
 ): Promise<User> => {
-    const isUserExist = await prisma.user.findFirst({ where: { email: user?.email } });
+    const isUserExist = await prisma.user.findFirst({ where: { id } });
     if (!isUserExist) {
         throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
     }
     const result = await prisma.user.update({
-        where: { email: user?.email },
-        data: payload
+        where: { id },
+        data
     });
     return result;
 };
