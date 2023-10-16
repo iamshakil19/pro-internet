@@ -26,6 +26,7 @@ model Package {
   name           String
   price          Int
   renewsFee      Int
+  category       String
   storage        String
   bandwidth      String
   website        String

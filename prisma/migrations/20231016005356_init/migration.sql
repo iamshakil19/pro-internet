@@ -19,6 +19,7 @@ CREATE TABLE "packages" (
     "name" TEXT NOT NULL,
     "price" INTEGER NOT NULL,
     "renewsFee" INTEGER NOT NULL,
+    "category" TEXT NOT NULL,
     "storage" TEXT NOT NULL,
     "bandwidth" TEXT NOT NULL,
     "website" TEXT NOT NULL,

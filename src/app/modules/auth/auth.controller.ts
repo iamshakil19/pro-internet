@@ -17,6 +17,8 @@ const signup = catchAsync(async (req: Request, res: Response) => {
 });
 
 const login = catchAsync(async (req: Request, res: Response) => {
+    console.log(req.body);
+
     const { ...loginData } = req.body;
     const result = await AuthService.login(loginData);
 
@@ -39,8 +41,21 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
         message: 'Password changed successfully',
     });
 });
+
+const getMe = catchAsync(async (req: Request, res: Response) => {
+    const user = req.user;
+    const result = await AuthService.getMe(user);
+    const { password, ...others } = result
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User fetched successfully',
+        data: others
+    });
+});
 export const AuthController = {
     login,
     signup,
-    changePassword
+    changePassword,
+    getMe
 };

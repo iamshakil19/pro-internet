@@ -26,4 +26,11 @@ router.post(
     AuthController.changePassword
 );
 
+router.get('/get-me', auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.USER
+),
+    AuthController.getMe)
+
 export const AuthRoutes = router;

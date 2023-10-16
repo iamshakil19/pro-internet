@@ -11,6 +11,9 @@ const createPackageZodSchema = z.object({
         renewsFee: z.number({
             required_error: 'Renews Fee is required',
         }),
+        category: z.string({
+            required_error: 'Category is required',
+        }),
         storage: z.string({
             required_error: 'Storage is required',
         }),
@@ -39,6 +42,7 @@ const updatePackageZodSchema = z.object({
         name: z.string().optional(),
         price: z.number().optional(),
         renewsFee: z.number().optional(),
+        category: z.string().optional(),
         storage: z.string().optional(),
         bandwidth: z.string().optional(),
         website: z.string().optional(),

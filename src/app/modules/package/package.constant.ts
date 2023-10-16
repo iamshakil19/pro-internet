@@ -1,7 +1,8 @@
 export const packageFilterableFields: string[] = [
-    'search',
-    'minPrice',
-    'maxPrice',
-  ];
-  
-  export const packageSearchableFields: string[] = ['name'];
+  'search',
+  'minPrice',
+  'maxPrice',
+  'category'
+];
+
+export const packageSearchableFields: string[] = ['name', 'category'];
