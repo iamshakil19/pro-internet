@@ -77,9 +77,25 @@ const getMe = async (user: JwtPayload | null): Promise<User> => {
     return isUserExist
 }
 
+const updateProfile = async (
+    user: JwtPayload | null,
+    payload: Partial<User>
+): Promise<User> => {
+    const isUserExist = await prisma.user.findFirst({ where: { email: user?.email } });
+    if (!isUserExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+    }
+    const result = await prisma.user.update({
+        where: { email: user?.email },
+        data: payload
+    });
+    return result;
+};
+
 export const AuthService = {
     login,
     signup,
     changePassword,
-    getMe
+    getMe,
+    updateProfile
 };
