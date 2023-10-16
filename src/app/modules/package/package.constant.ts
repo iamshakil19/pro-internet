@@ -1,5 +1,5 @@
 export const packageFilterableFields: string[] = [
-  'search',
+  'searchTerm',
   'minPrice',
   'maxPrice',
   'category'

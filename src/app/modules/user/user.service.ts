@@ -1,20 +1,22 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { userSearchableFields } from "./user.constant";
 import prisma from "../../../shared/prisma";
+import { JwtPayload } from "jsonwebtoken";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
-const getAllUser = async (filters: any, paginationOptions: any) => {
+const getAllUser = async (filters: any, paginationOptions: any, user: JwtPayload | null) => {
+    const { email } = user as any
     const { limit, page, skip } =
         paginationHelpers.calculatePagination(paginationOptions);
-    const { search, ...filterData } = filters;
-
+    const { searchTerm, ...filterData } = filters;
     const andConditions = [];
-
-    if (search) {
+    if (searchTerm) {
         andConditions.push({
             OR: userSearchableFields.map(field => ({
                 [field]: {
-                    contains: search,
+                    contains: searchTerm,
                     mode: 'insensitive',
                 },
             })),
@@ -31,8 +33,18 @@ const getAllUser = async (filters: any, paginationOptions: any) => {
         });
     }
 
-    const whereConditions: Prisma.UserWhereInput =
-        andConditions.length > 0 ? { AND: andConditions } : {};
+    const whereConditions: Prisma.UserWhereInput = {
+        AND: [
+            ...andConditions,
+            {
+                email: {
+                    not: {
+                        equals: email,
+                    },
+                },
+            },
+        ],
+    };
 
     const result = await prisma.user.findMany({
         where: whereConditions,
@@ -73,7 +85,21 @@ const getAllUser = async (filters: any, paginationOptions: any) => {
     };
 };
 
+const deleteUser = async (id: string): Promise<User> => {
+    const isExist = await prisma.user.findUnique({ where: { id } })
+    if (!isExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+    }
+    const result = await prisma.user.delete({
+        where: {
+            id,
+        },
+    });
+    return result;
+};
+
 
 export const UserService = {
-    getAllUser
+    getAllUser,
+    deleteUser
 }

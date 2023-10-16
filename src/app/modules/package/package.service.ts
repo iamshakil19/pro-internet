@@ -13,15 +13,15 @@ const createPackage = async (data: Package): Promise<Package> => {
 const getAllPackage = async (filters: any, paginationOptions: any) => {
   const { limit, page, skip } =
     paginationHelpers.calculatePagination(paginationOptions);
-  const { search, minPrice, maxPrice, ...filterData } = filters;
+  const { searchTerm, minPrice, maxPrice, ...filterData } = filters;
 
   const andConditions = [];
 
-  if (search) {
+  if (searchTerm) {
     andConditions.push({
       OR: packageSearchableFields.map(field => ({
         [field]: {
-          contains: search,
+          contains: searchTerm,
           mode: 'insensitive',
         },
       })),

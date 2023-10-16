@@ -1,5 +1,5 @@
 export const userFilterableFields: string[] = [
-    'search',
+    'searchTerm',
     'role',
     'email',
     'name'

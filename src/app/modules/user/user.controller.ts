@@ -8,6 +8,7 @@ import { UserService } from "./user.service";
 
 
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
+    const user = req.user
     const filters = pick(req.query, userFilterableFields);
     const paginationOptions = pick(req.query, [
         'limit',
@@ -16,7 +17,7 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
         'sortOrder',
     ]);
 
-    const result = await UserService.getAllUser(filters, paginationOptions);
+    const result = await UserService.getAllUser(filters, paginationOptions, user);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -26,6 +27,19 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await UserService.deleteUser(id);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'User deleted successfully',
+        data: result,
+    });
+});
+
 export const UserController = {
-    getAllUser
+    getAllUser,
+    deleteUser
 }
