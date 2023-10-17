@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
-  email     String    @unique
+  email     String     @unique
   role      String
   image     String?
   phone     String
   password  String
-  access    Boolean?  @default(true)
-  createdAt DateTime  @default(now())
+  access    Boolean?   @default(true)
+  createdAt DateTime   @default(now())
   bookings  Booking[]
+  feedbacks Feedback[]
 
   @@map("users")
 }
@@ -43,7 +44,7 @@ model Package {
 }
 
 model Booking {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   packageId String
   package   Package  @relation(fields: [packageId], references: [id])
   userId    String
@@ -62,3 +63,16 @@ enum Status {
   accepted
   cancel
 }
+
+model Feedback {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  desc      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("feedbacks")
+}
+
+
