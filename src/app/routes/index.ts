@@ -3,6 +3,7 @@ import { AuthRoutes } from '../modules/auth/auth.routes';
 import { PackageRoutes } from '../modules/package/package.routes';
 import { UserRoutes } from '../modules/user/user.routes';
 import { FeedbackRoutes } from '../modules/feedback/feedback.routes';
+import { FaqRoutes } from '../modules/faq/faq.routes';
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const moduleRoutes = [
   {
     path: "/feedback",
     routes: FeedbackRoutes
+  },
+  {
+    path: "/faq",
+    routes: FaqRoutes
   },
 ];
 

@@ -75,4 +75,23 @@ model Feedback {
   @@map("feedbacks")
 }
 
+model Blog {
+  id        String   @id @default(uuid())
+  title     String
+  desc      String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  @@map("blogs")
+}
+
+model Faq {
+  id        String   @id @default(uuid())
+  title     String
+  desc      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}
