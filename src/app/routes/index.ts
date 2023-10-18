@@ -4,6 +4,7 @@ import { PackageRoutes } from '../modules/package/package.routes';
 import { UserRoutes } from '../modules/user/user.routes';
 import { FeedbackRoutes } from '../modules/feedback/feedback.routes';
 import { FaqRoutes } from '../modules/faq/faq.routes';
+import { BlogRoutes } from '../modules/blog/blog.routes';
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: "/faq",
     routes: FaqRoutes
+  },
+  {
+    path: "/blog",
+    routes: BlogRoutes
   },
 ];
 
