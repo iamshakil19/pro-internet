@@ -1,7 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { bookingSearchableFields } from "./booking.constant";
-import { Prisma } from "@prisma/client";
+import { Booking, Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import { asyncForEach } from "../../../shared/utils";
 import ApiError from "../../../errors/ApiError";
@@ -31,12 +31,18 @@ const createBooking = async (user: any, data: any): Promise<any> => {
         );
     }
 
-    
+
 }
 
 
-const getAllBooking = async (user: JwtPayload, filters: any, paginationOptions: any) => {
+const getAllBooking = async (user: any, filters: any, paginationOptions: any) => {
     const { email, role } = user
+
+    const isUserExist = await prisma.user.findFirst({ where: { email } });
+    if (!isUserExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+    }
+
     const { limit, page, skip } =
         paginationHelpers.calculatePagination(paginationOptions);
     const { searchTerm, ...filterData } = filters;
@@ -64,6 +70,12 @@ const getAllBooking = async (user: JwtPayload, filters: any, paginationOptions: 
         });
     }
 
+    if (role === 'user') {
+        andConditions.push({
+            userId: isUserExist.id
+        })
+    }
+
     const whereConditions: Prisma.BookingWhereInput =
         andConditions.length > 0 ? { AND: andConditions } : {};
 
@@ -71,6 +83,10 @@ const getAllBooking = async (user: JwtPayload, filters: any, paginationOptions: 
         where: whereConditions,
         skip,
         take: limit,
+        include: {
+            package: true,
+            user: true
+        },
         orderBy:
             paginationOptions.sortBy && paginationOptions.sortOrder
                 ? { [paginationOptions.sortBy]: paginationOptions.sortOrder }
@@ -96,7 +112,51 @@ const getAllBooking = async (user: JwtPayload, filters: any, paginationOptions: 
     };
 };
 
+const getSingleBooking = async (id: string): Promise<Booking | null> => {
+    const isExist = await prisma.booking.findUnique({ where: { id } })
+    if (!isExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+    }
+    const result = await prisma.booking.findUnique({
+        where: {
+            id,
+        },
+    });
+    return result;
+};
+
+const updateBooking = async (
+    id: string,
+    payload: Partial<Booking>
+): Promise<Booking> => {
+    const isExist = await prisma.booking.findUnique({ where: { id } })
+    if (!isExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+    }
+    const result = await prisma.booking.update({
+        where: { id },
+        data: payload
+    });
+    return result;
+};
+
+const deleteBooking = async (id: string): Promise<Booking> => {
+    const isExist = await prisma.booking.findUnique({ where: { id } })
+    if (!isExist) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Not Found');
+    }
+    const result = await prisma.booking.delete({
+        where: {
+            id,
+        },
+    });
+    return result;
+};
+
 export const BookingService = {
     createBooking,
     getAllBooking,
+    getSingleBooking,
+    updateBooking,
+    deleteBooking
 };

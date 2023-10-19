@@ -19,6 +19,7 @@ model User {
   createdAt DateTime   @default(now())
   bookings  Booking[]
   feedbacks Feedback[]
+  ratings   Rating[]
 
   @@map("users")
 }
@@ -39,6 +40,7 @@ model Package {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   bookings       Booking[]
+  ratings        Rating[]
 
   @@map("packages")
 }
@@ -93,4 +95,18 @@ model Faq {
   updatedAt DateTime @updatedAt
 
   @@map("faqs")
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  rate      Int
+  desc      String
+  packageId String
+  package   Package  @relation(fields: [packageId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ratings")
 }

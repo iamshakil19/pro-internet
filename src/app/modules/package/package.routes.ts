@@ -13,12 +13,13 @@ router.post(
     validateRequest(PackageValidation.createPackageZodSchema),
     auth(
         ENUM_USER_ROLE.ADMIN,
+        ENUM_USER_ROLE.SUPER_ADMIN,
     ),
     PackageController.createPackage
 );
 router.get(
     '/',
-    PackageController.getAllBook
+    PackageController.getAllPackage
 );
 router.get(
     '/:id',
@@ -29,10 +30,11 @@ router.patch(
     validateRequest(PackageValidation.updatePackageZodSchema),
     auth(
         ENUM_USER_ROLE.ADMIN,
+        ENUM_USER_ROLE.SUPER_ADMIN,
     ),
     PackageController.updatePackage
 );
 
-router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), PackageController.deletePackage);
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN,), PackageController.deletePackage);
 
 export const PackageRoutes = router;

@@ -7,7 +7,7 @@ import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
 
 const getAllUser = async (filters: any, paginationOptions: any, user: JwtPayload | null) => {
-    const { email } = user as any
+    const { email, role } = user as any
     const { limit, page, skip } =
         paginationHelpers.calculatePagination(paginationOptions);
     const { searchTerm, ...filterData } = filters;
@@ -33,6 +33,12 @@ const getAllUser = async (filters: any, paginationOptions: any, user: JwtPayload
         });
     }
 
+    if (role !== 'super_admin') {
+        andConditions.push({
+            role: 'user'
+        })
+    }
+
     const whereConditions: Prisma.UserWhereInput = {
         AND: [
             ...andConditions,
@@ -42,6 +48,7 @@ const getAllUser = async (filters: any, paginationOptions: any, user: JwtPayload
                         equals: email,
                     },
                 },
+
             },
         ],
     };

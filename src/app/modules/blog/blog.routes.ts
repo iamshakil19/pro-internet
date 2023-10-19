@@ -12,6 +12,7 @@ router.post(
     validateRequest(BlogValidation.createBlogZodSchema),
     auth(
         ENUM_USER_ROLE.ADMIN,
+        ENUM_USER_ROLE.SUPER_ADMIN,
     ),
     BlogController.createBlog
 );
@@ -28,10 +29,11 @@ router.patch(
     validateRequest(BlogValidation.updateBlogZodSchema),
     auth(
         ENUM_USER_ROLE.ADMIN,
+        ENUM_USER_ROLE.SUPER_ADMIN,
     ),
     BlogController.updateBlog
 );
 
-router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BlogController.deleteBlog);
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN,), BlogController.deleteBlog);
 
 export const BlogRoutes = router;

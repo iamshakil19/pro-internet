@@ -16,7 +16,7 @@ const createPackage = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-const getAllBook = catchAsync(async (req: Request, res: Response) => {
+const getAllPackage = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, packageFilterableFields);
     const paginationOptions = pick(req.query, [
         'limit',
@@ -73,7 +73,7 @@ const deletePackage = catchAsync(async (req: Request, res: Response) => {
 
 export const PackageController = {
     createPackage,
-    getAllBook,
+    getAllPackage,
     getSinglePackage,
     updatePackage,
     deletePackage

@@ -1,6 +1,7 @@
 export const bookingFilterableFields: string[] = [
     'searchTerm',
-    'category'
+    'category',
+    'status',
   ];
   
-  export const bookingSearchableFields: string[] = ['name', 'category'];
+  export const bookingSearchableFields: string[] = ['name', 'category', 'status'];

@@ -14,6 +14,7 @@ const getAllPackage = async (filters: any, paginationOptions: any) => {
   const { limit, page, skip } =
     paginationHelpers.calculatePagination(paginationOptions);
   const { searchTerm, minPrice, maxPrice, ...filterData } = filters;
+  console.log(filters);
 
   const andConditions = [];
 
@@ -55,6 +56,7 @@ const getAllPackage = async (filters: any, paginationOptions: any) => {
 
   const whereConditions: Prisma.PackageWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
+console.log(whereConditions);
 
   const result = await prisma.package.findMany({
     where: whereConditions,
