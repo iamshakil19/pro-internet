@@ -50,7 +50,6 @@ model Booking {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   startDate DateTime
-  endDate   DateTime
   status    Status   @default(pending)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
