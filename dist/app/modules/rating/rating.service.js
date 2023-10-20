@@ -16,7 +16,6 @@ exports.RatingService = void 0;
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const http_status_1 = __importDefault(require("http-status"));
-const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const createRating = (user, data) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserExist = yield prisma_1.default.user.findFirst({ where: { email: user.email } });
     if (!isUserExist) {
@@ -27,7 +26,6 @@ const createRating = (user, data) => __awaiter(void 0, void 0, void 0, function*
     return result;
 });
 const getAllRating = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
-    const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(paginationOptions);
     const { filterData } = filters;
     const andConditions = [];
     if (Object.keys(filterData).length > 0) {
@@ -42,25 +40,13 @@ const getAllRating = (filters, paginationOptions) => __awaiter(void 0, void 0, v
     const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
     const result = yield prisma_1.default.rating.findMany({
         where: whereConditions,
-        skip,
-        take: limit,
         orderBy: paginationOptions.sortBy && paginationOptions.sortOrder
             ? { [paginationOptions.sortBy]: paginationOptions.sortOrder }
             : {
                 createdAt: 'desc',
             },
     });
-    const total = yield prisma_1.default.rating.count({
-        where: whereConditions,
-    });
-    const totalPage = Math.ceil(total / limit);
     return {
-        meta: {
-            total,
-            page,
-            limit,
-            totalPage,
-        },
         data: result,
     };
 });

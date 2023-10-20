@@ -28,7 +28,6 @@ const createRating = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     });
 }));
 const getAllRating = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('sdfsdf');
     const filters = (0, pick_1.default)(req.query, ['packageId']);
     const paginationOptions = (0, pick_1.default)(req.query, [
         'limit',
@@ -41,7 +40,6 @@ const getAllRating = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'All rating fetched successfully',
-        meta: result.meta,
         data: result.data,
     });
 }));
