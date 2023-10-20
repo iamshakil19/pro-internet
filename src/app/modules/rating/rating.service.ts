@@ -16,9 +16,9 @@ const createRating = async (user: any, data: Rating): Promise<Rating> => {
 };
 
 const getAllRating = async (filters: any, paginationOptions: any) => {
-    const { limit, page, skip } =
-        paginationHelpers.calculatePagination(paginationOptions);
+
     const { filterData } = filters;
+    
     const andConditions = [];
 
     if (Object.keys(filterData).length > 0) {
@@ -36,8 +36,6 @@ const getAllRating = async (filters: any, paginationOptions: any) => {
 
     const result = await prisma.rating.findMany({
         where: whereConditions,
-        skip,
-        take: limit,
         orderBy:
             paginationOptions.sortBy && paginationOptions.sortOrder
                 ? { [paginationOptions.sortBy]: paginationOptions.sortOrder }
@@ -46,19 +44,7 @@ const getAllRating = async (filters: any, paginationOptions: any) => {
                 },
     });
 
-    const total = await prisma.rating.count({
-        where: whereConditions,
-    });
-
-    const totalPage = Math.ceil(total / limit);
-
     return {
-        meta: {
-            total,
-            page,
-            limit,
-            totalPage,
-        },
         data: result,
     };
 };

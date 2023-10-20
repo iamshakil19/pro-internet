@@ -16,8 +16,6 @@ const createRating = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllRating = catchAsync(async (req: Request, res: Response) => {
-    console.log('sdfsdf');
-    
     const filters = pick(req.query, ['packageId']);
     const paginationOptions = pick(req.query, [
         'limit',
@@ -31,7 +29,6 @@ const getAllRating = catchAsync(async (req: Request, res: Response) => {
         statusCode: httpStatus.OK,
         success: true,
         message: 'All rating fetched successfully',
-        meta: result.meta,
         data: result.data,
     });
 });
